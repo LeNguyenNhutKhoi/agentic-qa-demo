@@ -1,0 +1,10 @@
+{
+  "username": "#username",
+  "password": "#password",
+  "loginBtn": "#btn-login",
+  "regEmail": "#reg-email",
+  "regPassword": "#reg-password",
+  "registerBtn": "#btn-register",
+  "payBtn": "#btn-pay",
+  "toast": ".toast"
+}

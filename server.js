@@ -50,6 +50,49 @@ const html = `<!doctype html>
   </script>
 </body>
 </html>`
+const style = html.slice(html.indexOf('<style>'), html.indexOf('</style>') + 8)
+const page = (title, sub, body, script) => `<!doctype html>
+<html lang="vi">
+<head><meta charset="utf-8"><title>${title}</title>${style}</head>
+<body>
+  <div class="card">
+  <h1>${title}</h1>
+  <p class="sub">${sub}</p>
+  ${body}
+  <div class="toast" hidden></div>
+  </div>
+  <script>
+    const show = (ok, text) => {
+      const t = document.querySelector('.toast')
+      t.textContent = text
+      t.classList.toggle('err', !ok)
+      t.hidden = false
+    }
+    ${script}
+  </script>
+</body>
+</html>`
+const pages = {
+  '/login': page('Đăng nhập', 'Đăng nhập bằng tài khoản của bạn',
+    `<input id="username" type="text" placeholder="Tên đăng nhập">
+  <input id="password" type="password" placeholder="Mật khẩu" style="margin-top:10px">
+  <button id="btn-login">Đăng nhập</button>`,
+    `document.getElementById('btn-login').onclick = () => setTimeout(() => {
+      const ok = document.getElementById('password').value === 'Pass@123'
+      show(ok, ok ? 'Đăng nhập thành công' : 'Sai mật khẩu')
+    }, 1000)`),
+  '/register': page('Đăng ký', 'Tạo tài khoản mới',
+    `<input id="reg-email" type="text" placeholder="Email">
+  <input id="reg-password" type="password" placeholder="Mật khẩu (tối thiểu 8 ký tự)" style="margin-top:10px">
+  <button id="btn-register">Đăng ký</button>`,
+    `document.getElementById('btn-register').onclick = () => setTimeout(() => {
+      const ok = document.getElementById('reg-password').value.length >= 8
+      show(ok, ok ? 'Đăng ký thành công' : 'Mật khẩu phải có ít nhất 8 ký tự')
+    }, 1500)`),
+  '/checkout': page('Thanh toán', 'Áo thun x1, tổng 199.000đ',
+    `<button id="btn-pay">Thanh toán</button>`,
+    `document.getElementById('btn-pay').onclick = () => setTimeout(() => show(true, 'Thanh toán thành công'), 2500)`)
+}
 const reply = (res, code, body) => {
   res.writeHead(code, { 'Content-Type': 'application/json' })
   res.end(JSON.stringify(body))
@@ -58,6 +101,10 @@ http.createServer((req, res) => {
   if (req.method === 'GET' && (req.url === '/' || req.url === '/forgot-password')) {
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' })
     return res.end(html)
+  }
+  if (req.method === 'GET' && pages[req.url]) {
+    res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' })
+    return res.end(pages[req.url])
   }
   if (req.method === 'POST' && req.url === '/api/password/reset') {
     if (API === '500') return reply(res, 500, { error: 'Internal Server Error' })
@@ -73,6 +120,6 @@ http.createServer((req, res) => {
   }
   res.writeHead(404)
   res.end()
-}).listen(3000, () => {
-  console.log(`Web demo: http://localhost:3000/forgot-password  (btn=${BTN}, api=${API})`)
+}).listen(PORT, () => {
+  console.log(`Web demo: http://localhost:${PORT}/forgot-password  (btn=${BTN}, api=${API})`)
 })
