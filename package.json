@@ -9,7 +9,7 @@
     "web:cham": "node server.js --api=slow",
     "test": "playwright test",
     "test:headed": "playwright test --headed",
-    "test:10-lan": "playwright test --repeat-each=10",
+    "test:10-lan": "playwright test -g TC03 --repeat-each=10 --workers=1",
     "report": "playwright show-report"
   },
   "devDependencies": {

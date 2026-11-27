@@ -46,7 +46,13 @@ http.createServer((req, res) => {
   if (req.method === 'POST' && req.url === '/api/password/reset') {
     if (API === '500') return reply(res, 500, { error: 'Internal Server Error' })
     const ok = () => reply(res, 200, { sent: true, expiresInMinutes: RESET_LINK_MINUTES })
-    if (API === 'slow') return setTimeout(ok, 3000 + Math.random() * 2800)
+    if (API === 'slow') {
+      const ms = Math.round(3000 + Math.random() * 2800)
+      return setTimeout(() => {
+        console.log(`POST /api/password/reset trả về sau ${(ms / 1000).toFixed(1)} giây`)
+        ok()
+      }, ms)
+    }
     return ok()
   }
   res.writeHead(404)
