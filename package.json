@@ -1,0 +1,19 @@
+{
+  "name": "agentic-qa-demo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "web": "node server.js",
+    "web:btn-moi": "node server.js --btn=new",
+    "web:loi-500": "node server.js --api=500",
+    "web:cham": "node server.js --api=slow",
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:10-lan": "playwright test --repeat-each=10",
+    "report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.47.0",
+    "@types/node": "^22.0.0"
+  }
+}
