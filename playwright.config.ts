@@ -7,7 +7,9 @@ export default defineConfig({
   reporter: [['list'], ['html', { open: 'never' }]],
   use: {
     baseURL: 'http://localhost:3000',
-    headless: true,
+    headless: process.env.HEADLESS === '1',
+    launchOptions: { slowMo: process.env.HEADLESS === '1' ? 0 : 400 },
+    viewport: { width: 1280, height: 720 },
     actionTimeout: 15000,
     screenshot: 'only-on-failure',
     trace: 'retain-on-failure'

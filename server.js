@@ -8,13 +8,28 @@ const btnHtml = BTN === 'new'
   : '<button id="btn-send">Gửi link</button>'
 const html = `<!doctype html>
 <html lang="vi">
-<head><meta charset="utf-8"><title>Quên mật khẩu</title></head>
+<head><meta charset="utf-8"><title>Quên mật khẩu</title>
+<style>
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #f3f4f6; font-family: Segoe UI, Arial, sans-serif; }
+  .card { width: 360px; padding: 32px; background: #fff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,.08); }
+  h1 { margin: 0 0 8px; font-size: 22px; }
+  .sub { margin: 0 0 20px; color: #6b7280; font-size: 14px; }
+  input { width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 15px; }
+  button { width: 100%; margin-top: 14px; padding: 11px; border: 0; border-radius: 8px; background: #2563eb; color: #fff; font-size: 15px; cursor: pointer; }
+  #email-error { margin: 8px 0 0; color: #dc2626; font-size: 13px; }
+  .toast { margin-top: 16px; padding: 10px 12px; border-radius: 8px; background: #ecfdf5; color: #065f46; font-size: 14px; }
+  .toast.err { background: #fef2f2; color: #991b1b; }
+</style>
+</head>
 <body>
+  <div class="card">
   <h1>Quên mật khẩu</h1>
+  <p class="sub">Nhập email để nhận link đặt lại mật khẩu</p>
   <input id="email" type="text" placeholder="Email">
   <p id="email-error" hidden>Email không đúng định dạng</p>
   ${btnHtml}
   <div class="toast" hidden></div>
+  </div>
   <script>
     const btn = document.querySelector('button')
     const toast = document.querySelector('.toast')
@@ -29,6 +44,7 @@ const html = `<!doctype html>
         body: JSON.stringify({ email })
       })
       toast.textContent = r.ok ? 'Đã gửi link đặt lại mật khẩu' : 'Lỗi máy chủ (' + r.status + ')'
+      toast.classList.toggle('err', !r.ok)
       toast.hidden = false
     }
   </script>

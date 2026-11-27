@@ -8,7 +8,6 @@
     "web:loi-500": "node server.js --api=500",
     "web:cham": "node server.js --api=slow",
     "test": "playwright test",
-    "test:headed": "playwright test --headed",
     "test:10-lan": "playwright test -g TC03 --repeat-each=10 --workers=1",
     "report": "playwright show-report"
   },
